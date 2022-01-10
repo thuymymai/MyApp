@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     alignContent: "center",
-    flexWrap: "wrap",
     backgroundColor: "#d9d9d9",
     marginBottom: 5,
   },

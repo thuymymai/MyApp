@@ -5,7 +5,12 @@ import { uploadsUrl } from "../utils/variables";
 
 const ListItem = (props) => {
   return (
-    <TouchableOpacity style={styles.row}>
+    <TouchableOpacity
+      onPress={() => {
+        props.navigation.navigate("Single", { item: props.singleMedia });
+      }}
+      style={styles.row}
+    >
       <View style={styles.imagebox}>
         <Image
           source={{ uri: uploadsUrl + props.singleMedia.thumbnails.w160 }}
@@ -47,6 +52,7 @@ const styles = StyleSheet.create({
 });
 
 ListItem.propTypes = {
+  navigation: PropTypes.object.isRequired,
   singleMedia: PropTypes.object.isRequired,
 };
 

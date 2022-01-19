@@ -15,19 +15,14 @@ const Login = ({ navigation }) => {
     if (userToken === "abc") {
       setIsLoggedIn(true);
     }
-    useEffect(() => {
-      checkToken();
-    }, []);
   };
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   const logIn = async () => {
-    try {
-      await AsyncStorage.setItem("userToken", "abc");
-      4;
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.log(error);
-    }
+    await AsyncStorage.setItem("userToken", "abc");
+    setIsLoggedIn(true);
   };
 
   return (

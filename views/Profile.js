@@ -9,14 +9,12 @@ const Profile = ({ navigation }) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(MainContext);
   console.log("profile isLoggedIn", isLoggedIn);
   const logout = async () => {
-    setIsLoggedIn(false);
     try {
       await AsyncStorage.clear();
-      navigation.navigate("Login");
+      setIsLoggedIn(false);
     } catch(error) {
-      console.log("error", error.message);
+      console.log("error", error);
     }
-    
   };
   return (
     <SafeAreaView style={styles.container}>

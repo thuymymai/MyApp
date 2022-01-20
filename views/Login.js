@@ -1,19 +1,28 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import PropTypes from "prop-types";
 import { MainContext } from "../contexts/MainContext";
 import { useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLogin, useUser } from "../hooks/ApiHooks";
+import LoginForm from "../components/LoginForm";
 
 const Login = ({ navigation }) => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(MainContext);
-  console.log("login isLoggedIn", isLoggedIn);
+  const { setIsLoggedIn } = useContext(MainContext);
+  const { postLogin } = useLogin();
+  const { getUserByToken } = useUser();
 
   const checkToken = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
-    console.log("token", userToken);
-    if (userToken === "abc") {
+    if (!userToken) {
+      return;
+    }
+    try {
+      const userData = await getUserByToken(userToken);
+      console.log("checkToken", userData);
       setIsLoggedIn(true);
+    } catch (error) {
+      console.error(error);
     }
   };
   useEffect(() => {
@@ -21,14 +30,21 @@ const Login = ({ navigation }) => {
   }, []);
 
   const logIn = async () => {
-    await AsyncStorage.setItem("userToken", "abc");
-    setIsLoggedIn(true);
+    // hardcoded username and password
+    const data = { username: "amy", password: "test12345" };
+    try {
+      const userData = await postLogin(data);
+      await AsyncStorage.setItem("userToken", userData.token);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text>Login</Text>
-      <Button title="Sign in!" onPress={logIn} />
+      <LoginForm navigation={navigation} />
     </View>
   );
 };

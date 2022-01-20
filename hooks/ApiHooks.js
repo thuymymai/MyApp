@@ -46,7 +46,7 @@ const useLogin = () => {
       if (response.ok) {
         return userData;
       } else {
-        throw Error(userData.message);
+        throw Error(userData.message + ": " + userData.error);
       }
     } catch (error) {
       throw Error(error.message);
@@ -64,7 +64,7 @@ const useUser = () => {
         headers: { "x-access-token": token },
       };
       const response = await fetch(baseUrl + "users/user", options);
-      const userData = response.json();
+      const userData = await response.json();
       if (response.ok) {
         return userData;
       } else {
@@ -74,8 +74,28 @@ const useUser = () => {
       throw Error(error.message);
     }
   };
+  const postUser = async (userCredentials) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userCredentials),
+    };
+    try {
+      const response = await fetch(baseUrl + "users", options);
+      const userData = await response.json();
+      if (response.ok) {
+        return userData;
+      } else {
+        throw Error(userData.message + ": " + userData.error);
+      }
+    } catch (error) {
+      throw Error(error.message);
+    }
+  };
 
-  return { getUserByToken };
+  return { getUserByToken, postUser };
 };
 
 export { useMedia, useLogin, useUser };

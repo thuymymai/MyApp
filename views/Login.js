@@ -1,15 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import PropTypes from "prop-types";
 import { MainContext } from "../contexts/MainContext";
 import { useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLogin, useUser } from "../hooks/ApiHooks";
+import { useUser } from "../hooks/ApiHooks";
 import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 
 const Login = ({ navigation }) => {
-  const { setIsLoggedIn } = useContext(MainContext);
-  const { postLogin } = useLogin();
+  const { setIsLoggedIn, setUser } = useContext(MainContext);
   const { getUserByToken } = useUser();
 
   const checkToken = async () => {
@@ -20,6 +27,7 @@ const Login = ({ navigation }) => {
     try {
       const userData = await getUserByToken(userToken);
       console.log("checkToken", userData);
+      setUser(userData);
       setIsLoggedIn(true);
     } catch (error) {
       console.error(error);
@@ -29,23 +37,22 @@ const Login = ({ navigation }) => {
     checkToken();
   }, []);
 
-  const logIn = async () => {
-    // hardcoded username and password
-    const data = { username: "amy", password: "test12345" };
-    try {
-      const userData = await postLogin(data);
-      await AsyncStorage.setItem("userToken", userData.token);
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <View style={styles.container}>
-      <Text>Login</Text>
-      <LoginForm navigation={navigation} />
-    </View>
+    <TouchableOpacity
+      onPress={() => Keyboard.dismiss()}
+      style={{ flex: 1 }}
+      activeOpacity={1}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+        style={styles.container}
+      >
+        <Text>Login</Text>
+        <LoginForm />
+        <Text>Sign up</Text>
+        <RegisterForm />
+      </KeyboardAvoidingView>
+    </TouchableOpacity>
   );
 };
 

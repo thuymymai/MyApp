@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useContext } from "react";
-import { StyleSheet, SafeAreaView, Text, Button } from "react-native";
+import { useContext, useState } from "react";
+import { StyleSheet, SafeAreaView, Text, Button, Image } from "react-native";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTag } from "../hooks/ApiHooks";
+import { uploadsUrl } from "../utils/variables";
 
 const Profile = ({ navigation }) => {
   const { setIsLoggedIn, user } = useContext(MainContext);
   console.log("Profile user", user);
+  const [avatar, setAvatar] = useState("http://placekitten.com/640");
+  const { getFileByTag } = useTag();
+  const fetchAvatar = async (tag) => {
+    const avatarArray = await getFileByTag("avatar_" + user.user_id);
+    const avatar = avatarArray.pop();
+    console.log("avatar", avatar);
+    setAvatar(uploadsUrl + avatar.filename);
+  };
+  useEffect(() => {
+    fetchAvatar();
+  }, []);
   const logout = async () => {
     await AsyncStorage.clear();
     setIsLoggedIn(false);
@@ -16,6 +29,11 @@ const Profile = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Text>Profile</Text>
       <Text>{user.username}</Text>
+      <Image
+        source={{ uri: avatar }}
+        style={{ width: "80%", height: "50%" }}
+        resizeMode="contain"
+      ></Image>
       <Text>{user.email}</Text>
       <Text>{user.full_name}</Text>
       <Button title={"Logout"} onPress={logout} />

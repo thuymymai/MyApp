@@ -1,7 +1,6 @@
 import React from "react";
+import { Text } from "react-native-elements";
 import {
-  StyleSheet,
-  Text,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -44,10 +43,7 @@ const Login = ({ navigation }) => {
       style={{ flex: 1 }}
       activeOpacity={1}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : ""}
-        style={styles.container}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
         <Text>Login</Text>
         <LoginForm />
         <Text>Sign up</Text>
@@ -57,14 +53,14 @@ const Login = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });
 
 Login.propTypes = {
   navigation: PropTypes.object,

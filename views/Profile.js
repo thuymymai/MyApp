@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
-import { StyleSheet, SafeAreaView, Text, Button, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, Button, Image } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTag } from "../hooks/ApiHooks";
@@ -30,7 +31,7 @@ const Profile = ({ navigation }) => {
     setIsLoggedIn(false);
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <Text>Profile</Text>
       <Text>{user.username}</Text>
       <Image
@@ -45,15 +46,15 @@ const Profile = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 40,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     paddingTop: 40,
+//   },
+// });
 
 Profile.propTypes = {
   navigation: PropTypes.object,

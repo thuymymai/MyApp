@@ -1,10 +1,11 @@
 import React from "react";
 import { Button, Input } from "react-native-elements";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useUser } from "../hooks/ApiHooks";
+import PropTypes from "prop-types";
 
-const RegisterForm = () => {
+const RegisterForm = ({ setFormToggle }) => {
   const { postUser, checkUsername } = useUser();
   const {
     getValues,
@@ -27,6 +28,10 @@ const RegisterForm = () => {
       delete data.password_again;
       const userData = await postUser(data);
       console.log("register onSubmit", userData);
+      if (userData) {
+        setFormToggle(true);
+        Alert.alert("Success", "User created successfully! Please login!");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -168,6 +173,10 @@ const RegisterForm = () => {
       <Button title="Register!" onPress={handleSubmit(onSubmit)} />
     </View>
   );
+};
+
+RegisterForm.propTypes = {
+  setFormToggle: PropTypes.func,
 };
 
 export default RegisterForm;

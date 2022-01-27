@@ -11,6 +11,7 @@ import { uploadsUrl } from "../utils/variables";
 const Profile = ({ navigation }) => {
   const { setIsLoggedIn, user } = useContext(MainContext);
   console.log("Profile user", user);
+  console.log("addition user", JSON.stringify(user.full_name));
   const [avatar, setAvatar] = useState("http://placekitten.com/640");
   const { getFileByTag } = useTag();
   const fetchAvatar = async (tag) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, Button } from "react-native-elements";
-import { TextInput, View } from "react-native";
+import { Text, Button, Input } from "react-native-elements";
+import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useUser } from "../hooks/ApiHooks";
 
@@ -37,8 +37,7 @@ const RegisterForm = () => {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -56,8 +55,7 @@ const RegisterForm = () => {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -76,8 +74,7 @@ const RegisterForm = () => {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -92,8 +89,7 @@ const RegisterForm = () => {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

@@ -1,10 +1,12 @@
 import React from "react";
-import { Text, ThemeProvider } from "react-native-elements";
+import { Card } from "react-native-elements";
 import {
+  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
   Keyboard,
+  View,
 } from "react-native";
 import PropTypes from "prop-types";
 import { MainContext } from "../contexts/MainContext";
@@ -38,32 +40,41 @@ const Login = ({ navigation }) => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <TouchableOpacity
-        onPress={() => Keyboard.dismiss()}
-        style={{ flex: 1 }}
-        activeOpacity={1}
+    <TouchableOpacity
+      onPress={() => Keyboard.dismiss()}
+      style={{ flex: 1 }}
+      activeOpacity={1}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+        style={styles.container}
       >
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
-          <Text>Login</Text>
-          <LoginForm />
-          <Text>Sign up</Text>
-          <RegisterForm />
-        </KeyboardAvoidingView>
-      </TouchableOpacity>
-    </ThemeProvider>
+        <View style={styles.form}>
+          <Card>
+            <Card.Title h4>Login</Card.Title>
+            <Card.Divider />
+            <LoginForm />
+          </Card>
+          <Card>
+            <Card.Title h4>Register</Card.Title>
+            <Card.Divider />
+            <RegisterForm />
+          </Card>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableOpacity>
   );
 };
 
-const theme = {
-  Text: {
-    style: {
-      fontSize: 25,
-      textAlign: "center",
-      fontWeight: "bold",
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
   },
-};
+  form: {
+    flex: 8,
+  },
+});
 
 Login.propTypes = {
   navigation: PropTypes.object,

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, Button, Image } from "react-native-elements";
+import { StyleSheet, ActivityIndicator } from "react-native";
+import { Card, Text, Button, ListItem, Avatar } from "react-native-elements";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTag } from "../hooks/ApiHooks";
@@ -31,30 +31,31 @@ const Profile = ({ navigation }) => {
     setIsLoggedIn(false);
   };
   return (
-    <SafeAreaView>
-      <Text>Profile</Text>
-      <Text>{user.username}</Text>
-      <Image
+    <Card>
+      <Card.Title>
+        <Text h1>{user.username}</Text>
+      </Card.Title>
+      <Card.Image
         source={{ uri: avatar }}
-        style={{ width: "80%", height: "50%" }}
-        resizeMode="contain"
-      ></Image>
-      <Text>{user.email}</Text>
-      <Text>{user.full_name}</Text>
+        style={styles.image}
+        PlaceholderContent={<ActivityIndicator />}
+      />
+      <ListItem>
+        <Avatar icon={{ name: "email", color: "black" }} />
+        <Text>{user.email}</Text>
+      </ListItem>
+      <ListItem>
+        <Avatar icon={{ name: "user", type: "font-awesome", color: "black" }} />
+        <Text>{user.full_name}</Text>
+      </ListItem>
       <Button title={"Logout"} onPress={logout} />
-    </SafeAreaView>
+    </Card>
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     paddingTop: 40,
-//   },
-// });
+const styles = StyleSheet.create({
+  image: { width: "100%", height: undefined, aspectRatio: 1 },
+});
 
 Profile.propTypes = {
   navigation: PropTypes.object,

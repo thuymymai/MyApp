@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { Text, Button } from "react-native-elements";
-import { TextInput, View } from "react-native";
+import { Button, Input, Text } from "react-native-elements";
+import { View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { MainContext } from "../contexts/MainContext";
 import { useLogin } from "../hooks/ApiHooks";
@@ -40,8 +40,7 @@ const LoginForm = () => {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -59,8 +58,7 @@ const LoginForm = () => {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{ borderWidth: 1 }}
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useUser } from "../hooks/ApiHooks";
 
 const RegisterForm = () => {
-  const { postUser } = useUser();
+  const { postUser, checkUsername } = useUser();
   const {
     control,
     handleSubmit,
@@ -17,6 +17,7 @@ const RegisterForm = () => {
       email: "",
       full_name: "",
     },
+    mode: "onBlur",
   });
 
   const onSubmit = async (data) => {
@@ -34,7 +35,20 @@ const RegisterForm = () => {
       <Controller
         control={control}
         rules={{
-          required: true,
+          required: { value: true, message: "This is required." },
+          validate: async (value) => {
+            try {
+              const available = await checkUsername(value);
+              console.log("available", available);
+              if (available) {
+                return true;
+              } else {
+                return "Username is already taken!";
+              }
+            } catch (error) {
+              throw Error(error.message);
+            }
+          },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
@@ -43,12 +57,11 @@ const RegisterForm = () => {
             value={value}
             autoCapitalize="none"
             placeholder="username"
+            errorMessage={errors.username && errors.username.message}
           />
         )}
         name="username"
       />
-      {errors.username && <Text>This is required.</Text>}
-
       <Controller
         control={control}
         rules={{
@@ -67,7 +80,6 @@ const RegisterForm = () => {
         name="password"
       />
       {errors.password && <Text>This is required.</Text>}
-
       <Controller
         control={control}
         rules={{
@@ -85,7 +97,6 @@ const RegisterForm = () => {
         name="email"
       />
       {errors.email && <Text>This is required.</Text>}
-
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -99,7 +110,6 @@ const RegisterForm = () => {
         )}
         name="full_name"
       />
-
       <Button title="Register!" onPress={handleSubmit(onSubmit)} />
     </View>
   );

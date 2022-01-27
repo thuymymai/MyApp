@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native-elements";
+import { Text, ThemeProvider } from "react-native-elements";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -38,29 +38,32 @@ const Login = ({ navigation }) => {
   }, []);
 
   return (
-    <TouchableOpacity
-      onPress={() => Keyboard.dismiss()}
-      style={{ flex: 1 }}
-      activeOpacity={1}
-    >
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
-        <Text>Login</Text>
-        <LoginForm />
-        <Text>Sign up</Text>
-        <RegisterForm />
-      </KeyboardAvoidingView>
-    </TouchableOpacity>
+    <ThemeProvider theme={theme}>
+      <TouchableOpacity
+        onPress={() => Keyboard.dismiss()}
+        style={{ flex: 1 }}
+        activeOpacity={1}
+      >
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : ""}>
+          <Text>Login</Text>
+          <LoginForm />
+          <Text>Sign up</Text>
+          <RegisterForm />
+        </KeyboardAvoidingView>
+      </TouchableOpacity>
+    </ThemeProvider>
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
+const theme = {
+  Text: {
+    style: {
+      fontSize: 25,
+      textAlign: "center",
+      fontWeight: "bold",
+    },
+  },
+};
 
 Login.propTypes = {
   navigation: PropTypes.object,

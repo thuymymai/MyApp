@@ -43,7 +43,7 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            placeholder="Username"
+            placeholder="username"
           />
         )}
         name="username"
@@ -63,7 +63,7 @@ const RegisterForm = () => {
             value={value}
             autoCapitalize="none"
             secureTextEntry={true}
-            placeholder="Password"
+            placeholder="password"
           />
         )}
         name="password"
@@ -82,7 +82,7 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            placeholder="Email"
+            placeholder="email"
           />
         )}
         name="email"
@@ -98,13 +98,13 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="words"
-            placeholder="Full name"
+            placeholder="fufllname"
           />
         )}
         name="full_name"
       />
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Button title="Register!" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };

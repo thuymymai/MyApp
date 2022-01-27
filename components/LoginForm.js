@@ -46,7 +46,7 @@ const LoginForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
-            placeholder="Username"
+            placeholder="username"
           />
         )}
         name="username"
@@ -66,14 +66,14 @@ const LoginForm = () => {
             value={value}
             autoCapitalize="none"
             secureTextEntry={true}
-            placeholder="Password"
+            placeholder="password"
           />
         )}
         name="password"
       />
       {errors.password && <Text>This is required.</Text>}
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Button title="Sign in!" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };

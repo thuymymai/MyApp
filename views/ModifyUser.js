@@ -27,7 +27,6 @@ const ModifyUser = ({ navigation }) => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       delete data.confirmPassword;
       if (data.password === "") {

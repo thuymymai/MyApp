@@ -10,13 +10,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MainContext } from "../contexts/MainContext";
 import { useFocusEffect } from "@react-navigation/native";
 import { appId } from "../utils/variables";
+import { Video } from "expo-av";
 
 const Upload = ({ navigation }) => {
   const [image, setImage] = useState(
     "https://place-hold.it/300x200&text=Choose"
   );
   const [imageSelected, setImageSelected] = useState(false);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("image");
   const { postMedia, loading } = useMedia();
   const { update, setUpdate } = useContext(MainContext);
   const { postTag } = useTag();
@@ -98,11 +99,24 @@ const Upload = ({ navigation }) => {
   return (
     <ScrollView>
       <Card>
-        <Card.Image
-          source={{ uri: image }}
-          style={{ height: 300, marginBottom: 15 }}
-          onPress={pickImage}
-        ></Card.Image>
+        {type === "image" ? (
+          <Card.Image
+            source={{ uri: image }}
+            style={{ height: 300, marginBottom: 15 }}
+            onPress={pickImage}
+          ></Card.Image>
+        ) : (
+          <Video
+            source={{ uri: image }}
+            style={{ height: 300, marginBottom: 15 }}
+            useNativeControls={true}
+            resizeMode="cover"
+            onError={(err) => {
+              console.error("video", err);
+            }}
+          />
+        )}
+
         <Controller
           control={control}
           rules={{

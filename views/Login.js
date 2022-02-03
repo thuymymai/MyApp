@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../hooks/ApiHooks";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import Logo from "../assets/logo.svg";
 
 const Login = ({ navigation }) => {
   const [formToggle, setFormToggle] = useState(true);
@@ -50,6 +51,9 @@ const Login = ({ navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : ""}
         style={styles.container}
       >
+        <View style={styles.appTitle}>
+          <Logo style={styles.logo} />
+        </View>
         <View style={styles.form}>
           <Card>
             <ButtonGroup
@@ -84,6 +88,15 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 8,
+  },
+  appTitle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

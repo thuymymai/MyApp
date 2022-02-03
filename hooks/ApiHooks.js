@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { MainContext } from "../contexts/MainContext";
-import { baseUrl } from "../utils/variables";
+import { appId, baseUrl } from "../utils/variables";
 
 const doFetch = async (url, options = {}) => {
   try {
@@ -21,10 +21,12 @@ const doFetch = async (url, options = {}) => {
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { update } = useContext(MainContext);
   const loadMedia = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(baseUrl + "media/");
+      const response = await fetch(baseUrl + "tags/" + appId);
       if (!response.ok) {
         throw Error(response.statusText);
       }
@@ -37,9 +39,10 @@ const useMedia = () => {
         })
       );
       setMediaArray(media);
-      console.log(mediaArray);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,6 +51,7 @@ const useMedia = () => {
   }, [update]);
 
   const postMedia = async (formData, token) => {
+    setLoading(true);
     const options = {
       method: "POST",
       headers: {
@@ -56,9 +60,11 @@ const useMedia = () => {
       },
       body: formData,
     };
-    return await doFetch(baseUrl + "media", options);
+    const result = await doFetch(baseUrl + "media", options);
+    result && setLoading(false);
+    return result;
   };
-  return { mediaArray, postMedia };
+  return { mediaArray, postMedia, loading };
 };
 
 const useLogin = () => {

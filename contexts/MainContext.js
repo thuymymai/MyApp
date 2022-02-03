@@ -7,7 +7,7 @@ const MainContext = React.createContext({});
 const MainProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
-  const [update, setUpdate] = useState(true);
+  const [update, setUpdate] = useState(0);
 
   return (
     <MainContext.Provider

@@ -147,4 +147,40 @@ const useTag = () => {
   return { postTag, getFileByTag };
 };
 
-export { useMedia, useLogin, useUser, useTag };
+const useFavorite = () => {
+  const getFavoriteByFileId = async (id, token) => {
+    const options = {
+      method: "GET",
+      headers: {
+        "x-access-token": token,
+      },
+    };
+    return await doFetch(baseUrl + "favourites/file/" + id, options);
+  };
+
+  const addFavorite = async (data, token) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+      body: JSON.stringify({ file_id: data }),
+    };
+    return await doFetch(baseUrl + "favourites/", options);
+  };
+
+  const deleteFavorite = async (id, token) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "x-access-token": token,
+      },
+    };
+    return await doFetch(baseUrl + "favourites/file/" + id, options);
+  };
+
+  return { getFavoriteByFileId, addFavorite, deleteFavorite };
+};
+
+export { useMedia, useLogin, useUser, useTag, useFavorite };

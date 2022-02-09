@@ -144,7 +144,6 @@ const Upload = ({ navigation }) => {
               onChangeText={onChange}
               value={value}
               autoCapitalize="none"
-              secureTextEntry={true}
               placeholder="description"
               errorMessage={errors.description}
             />

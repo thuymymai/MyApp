@@ -51,6 +51,7 @@ const Upload = ({ navigation }) => {
     setImageSelected(false);
     setValue("title", "");
     setValue("description", "");
+    setType("image");
   };
 
   useFocusEffect(

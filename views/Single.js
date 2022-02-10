@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect } from "react";
+import { React, useRef, useState, useEffect, useContext } from "react";
 import { Avatar, Card, ListItem, Text, Button } from "react-native-elements";
 import { ActivityIndicator, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
@@ -6,15 +6,17 @@ import { uploadsUrl } from "../utils/variables";
 import { Video } from "expo-av";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFavorite, useUser } from "../hooks/ApiHooks";
+import { MainContext } from "../contexts/MainContext";
 
 const Single = ({ route }) => {
+  const { user } = useContext(MainContext);
   const { item } = route.params;
   const videoRef = useRef(null);
   const { getUserById } = useUser();
-  const [user, setUser] = useState("Owner");
-  const [likedUser, setLikedUser] = useState("");
+  const [owner, setOwner] = useState("Owner");
   const [like, setLike] = useState([null]);
   const { addFavorite, getFavoriteByFileId, deleteFavorite } = useFavorite();
+  const [userLike, setUserLike] = useState(false);
 
   const getUser = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
@@ -24,10 +26,10 @@ const Single = ({ route }) => {
     try {
       const response = await getUserById(userToken, item.user_id);
       console.log("Response for user", response);
-      setUser(response);
+      setOwner(response);
     } catch (error) {
       console.error(error);
-      setUser({ username: "[not available]" });
+      setOwner({ username: "[not available]" });
     }
   };
 
@@ -38,7 +40,9 @@ const Single = ({ route }) => {
     }
     try {
       console.log("item file id", item.file_id);
-      await addFavorite(item.file_id, userToken);
+      const response = await addFavorite(item.file_id, userToken);
+      response && setUserLike(true);
+      console.log("users liked", response);
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +54,8 @@ const Single = ({ route }) => {
       return;
     }
     try {
-      await deleteFavorite(item.file_id, userToken);
+      const response = await deleteFavorite(item.file_id, userToken);
+      response && setUserLike(false);
     } catch (error) {
       console.error(error);
     }
@@ -63,6 +68,9 @@ const Single = ({ route }) => {
     }
     try {
       const response = await getFavoriteByFileId(item.file_id, userToken);
+      response.forEach((like) => {
+        like.user_id === user.user_id && setUserLike(true);
+      });
       setLike(response);
     } catch (error) {
       console.error(error);
@@ -71,8 +79,11 @@ const Single = ({ route }) => {
 
   useEffect(() => {
     getUser();
-    getLike();
   }, []);
+  useEffect(() => {
+    getLike();
+  }, [userLike]);
+
   return (
     <Card>
       <Card.Title h4>{item.title}</Card.Title>
@@ -98,22 +109,23 @@ const Single = ({ route }) => {
 
       <ListItem>
         <Avatar source={{ uri: "http://placekitten.com/180" }} />
-        <Text>{user.username}</Text>
+        <Text>{owner.username}</Text>
       </ListItem>
       <ListItem>
         <Button
+          disabled={userLike}
           style={{ height: 50, width: 50 }}
           title={"Like"}
           onPress={likeFunc}
         ></Button>
         <Button
+          disabled={!userLike}
           style={{ height: 50, width: 70 }}
           title={"Unlike"}
           onPress={unLikeFunc}
         ></Button>
         <Text>Likes count: {like.length}</Text>
       </ListItem>
-      <Text>User liked: {likedUser}</Text>
     </Card>
   );
 };

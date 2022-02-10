@@ -19,10 +19,10 @@ const doFetch = async (url, options = {}) => {
   }
 };
 
-const useMedia = () => {
+const useMedia = (myFilesOnly) => {
   const [mediaArray, setMediaArray] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { update } = useContext(MainContext);
+  const { update, user } = useContext(MainContext);
   const loadMedia = async () => {
     setLoading(true);
     try {
@@ -30,7 +30,12 @@ const useMedia = () => {
       if (!response.ok) {
         throw Error(response.statusText);
       }
-      const json = await response.json();
+      let json = await response.json();
+      if (myFilesOnly) {
+        json = json.filter((file) => {
+          return file.user_id === user.user_id;
+        });
+      }
       const media = await Promise.all(
         json.map(async (item) => {
           const response = await fetch(baseUrl + "media/" + item.file_id);
@@ -64,7 +69,30 @@ const useMedia = () => {
     result && setLoading(false);
     return result;
   };
-  return { mediaArray, postMedia, loading };
+
+  const putMedia = async (data, token, id) => {
+    setLoading(true);
+    const options = {
+      method: "PUT",
+      headers: {
+        "x-access-token": token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    return await doFetch(baseUrl + "media/" + id, options);
+  };
+
+  const deleteMedia = async (id, token) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "x-access-token": token,
+      },
+    };
+    return await doFetch(baseUrl + "media/" + id, options);
+  };
+  return { mediaArray, postMedia, loading, putMedia, deleteMedia };
 };
 
 const useLogin = () => {

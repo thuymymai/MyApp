@@ -88,12 +88,6 @@ const ModifyUser = ({ navigation }) => {
             value: 5,
             message: "Password has to be at least 5 characters.",
           },
-          /*
-          pattern: {
-            value: /(?=.*[\p{Lu}])(?=.*[0-9]).{8,}/u,
-            message: 'Min 8, Uppercase, Number',
-          },
-          */
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
